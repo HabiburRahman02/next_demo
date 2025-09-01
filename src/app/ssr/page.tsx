@@ -1,14 +1,16 @@
-import { FC } from "react";
+// app/ssr/page.tsx
+export default async function SsrPage() {
+  // সরাসরি server-side এ fetch ব্যবহার করা যায়
+  const res = await fetch("https://jsonplaceholder.typicode.com/posts/1", {
+    // caching: "no-store" দিলে SSR (fresh) behaviour হবে
+    cache: "no-store",
+  });
+  const post = await res.json();
 
-const SSRPage: FC = () => {
-  const serverTime = new Date().toLocaleTimeString();
   return (
-     <div className="px-52 w-full p-12">
-      <h1>SSR Page</h1>
-      <p>Server Time: {serverTime}</p>
-      <p>This is rendered on the server every request.</p>
+    <div>
+      <h1>SSR Example (App Router)</h1>
+      <p>{post.title}</p>
     </div>
   );
-};
-
-export default SSRPage;
+}

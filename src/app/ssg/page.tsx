@@ -1,20 +1,14 @@
-import { FC } from "react";
-
-// Simulate fetch/build-time data
-const fetchBuildData = async (): Promise<string> => {
-  return new Date().toLocaleDateString();
-};
-
-const SSGPage: FC<{ buildDate: string }> = async () => {
-  const buildDate = await fetchBuildData();
+// app/ssg/page.tsx
+export default async function SsgPage() {
+  const res = await fetch("https://jsonplaceholder.typicode.com/posts/1", {
+    cache: "force-cache", // build-time/static behavior
+  });
+  const post = await res.json();
 
   return (
-    <div className="px-52 w-full p-12">
-      <h1>SSG Page</h1>
-      <p>Build Date: {buildDate}</p>
-      <p>This is statically generated at build time.</p>
+    <div>
+      <h1>SSG Example (App Router)</h1>
+      <p>{post.title}</p>
     </div>
   );
-};
-
-export default SSGPage;
+}

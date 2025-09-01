@@ -1,21 +1,22 @@
 "use client";
-import { FC, useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
-const CSRPage: FC = () => {
-  const [time, setTime] = useState<string>("");
+export default function CsrPage() {
+  const [data, setData] = useState(null);
 
   useEffect(() => {
-    const timer = setInterval(() => setTime(new Date().toLocaleTimeString()), 1000);
-    return () => clearInterval(timer);
+    fetch("https://jsonplaceholder.typicode.com/posts/1")
+      .then((res) => res.json())
+      .then(setData);
   }, []);
 
+  if (!data) return <p>Loading...</p>;
+
   return (
-    <div className="px-52 w-full p-12">
-      <h1>CSR Page</h1>
-      <p>Client Time: {time}</p>
-      <p>This is rendered on the client/browser.</p>
+    <div className="p-6 max-w-2xl mx-auto">
+      <h1 className="text-2xl font-bold mb-4">CSR Example</h1>
+      <p className="text-blue-600 font-medium">{data.title}</p>
+      <p className="text-gray-500 mt-2">Data fetched on client side</p>
     </div>
   );
-};
-
-export default CSRPage;
+}
